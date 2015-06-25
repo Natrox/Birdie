@@ -15,7 +15,8 @@ typedef enum
 	AddWatch = 2,
 	RemoveWatchObject = 3,
 	AddCategory = 4,
-	AddLogMessage = 5
+	AddLogMessage = 5,
+	AddCustomTypeHandler = 6
 } BIRDIE_OPERATION_TYPE;
 
 
@@ -423,6 +424,56 @@ BIRDIEAPI BIRDIE_ERROR Birdie_LogF(const char* pFilter, const char* pFormat, ...
 		return BIRDIE_ERROR_NOT_CONNECTED;
 
 	return BIRDIE_SUCCESS;
+}
+
+BIRDIE_ERROR Birdie_AddCustomTypeHandler(BIRDIE_TYPE type, const char* handlerCode)
+{
+	if (g_isConnected == false)
+		return BIRDIE_ERROR_NOT_CONNECTED;
+
+	uint32_t typeLength = (uint32_t)strlen(type);
+	uint32_t codeLength = (uint32_t)strlen(handlerCode);
+
+	size_t totalSize = 
+		sizeof(uint32_t) + 
+		sizeof(uint32_t) +
+		sizeof(uint32_t) +
+		typeLength +
+		sizeof(uint32_t) +
+		codeLength;
+
+	if (totalSize > BIRDIE_SCRATCH_BUFFER_SIZE)
+		return BIRDIE_ERROR_INSUFFICIENT_MEMORY;
+
+	size_t offset = 0;
+	uint32_t operationType = AddCustomTypeHandler;
+
+	EnterCriticalSection(&g_csBuffer);
+
+	memcpy((void*)(g_scratchBuffer + offset), (void*)&operationType, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+
+	memcpy((void*)(g_scratchBuffer + offset), (void*)&typeLength, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+
+	memcpy((void*)(g_scratchBuffer + offset), (void*)type, typeLength);
+	offset += typeLength;
+
+	memcpy((void*)(g_scratchBuffer + offset), (void*)&codeLength, sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+
+	memcpy((void*)(g_scratchBuffer + offset), (void*)handlerCode, codeLength);
+	offset += codeLength;
+
+	WSA_ERROR wsaError = Birdie_SendData(offset);
+
+	LeaveCriticalSection(&g_csBuffer);
+
+	if (wsaError != 0)
+		return BIRDIE_ERROR_NOT_CONNECTED;
+
+	return BIRDIE_SUCCESS;
+
 }
 
 BIRDIE_HANDLE Birdie_GetNewHandle()

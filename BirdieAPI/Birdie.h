@@ -169,7 +169,7 @@ BIRDIEAPI BIRDIE_ERROR Birdie_RemoveWatchCategory(BIRDIE_HANDLE handle);
 /// </param>
 /// <param name="dataSizeBytes">
 ///		Determines the size in bytes to monitor. Use one of the BIRDIE_SIZE_* values if available.
-///		For strings and data using BIRDIE_TYPE_HEX, use an appropiate size value.
+///		For strings and data using BIRDIE_TYPE_HEX, use an appropriate size value.
 /// </param>
 /// <param name="parent">
 ///		Handle to a parent. This can be a category, or a watch object. Optional, use '0' for no parent.
@@ -237,5 +237,24 @@ BIRDIEAPI BIRDIE_ERROR Birdie_Log(const char* pFilter, const char* pMessage);
 ///		Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_LogF(const char* pFilter, const char* pFormat, ...);
+
+
+// User-defined customs
+
+/// <summary>
+///		Adds handler code for custom watch types.
+/// </summary>
+/// <param name="type">
+///		Type for which to add custom handler code.
+/// </param>
+/// <param name="handlerCode">
+///		Custom handler code (C#). Check documentation for the right format.
+/// </param>
+/// <returns>
+///		Returns BIRDIE_SUCCESS on success.
+///		Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
+///		Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
+/// </returns>
+BIRDIEAPI BIRDIE_ERROR Birdie_AddCustomTypeHandler(BIRDIE_TYPE type, const char* handlerCode);
 
 #endif
