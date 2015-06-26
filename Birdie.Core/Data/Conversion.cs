@@ -35,7 +35,7 @@ namespace Birdie.Data
     public static class DataConverter
     {
         #region Delegates        
-        public delegate string ConversionFunction(WatchMemoryObject watchOject);
+        public delegate object ConversionFunction(WatchMemoryObject watchOject);
         #endregion
 
         #region Methods   
@@ -53,7 +53,7 @@ namespace Birdie.Data
                 conversionFunctions.Add(type, function);
         }
 
-        public static string Convert(WatchMemoryObject watchMemoryObject)
+        public static object Convert(WatchMemoryObject watchMemoryObject)
         {
             if (!conversionFunctions.ContainsKey(watchMemoryObject.Type))
                 return null;
@@ -91,72 +91,72 @@ namespace Birdie.Data
             DataConverter.AddConversionFunction(BaseTypes.HEXPattern.ToString(), HEXPatternToString);
         }
 
-        public static string BoolToString(WatchMemoryObject watchMemoryObject)
+        public static object BoolToString(WatchMemoryObject watchMemoryObject)
         {
             return watchMemoryObject.Data[0] > 0 ? "true" : "false";
         }
 
-        public static string Int8ToString(WatchMemoryObject watchMemoryObject)
+        public static object Int8ToString(WatchMemoryObject watchMemoryObject)
         {
             return ((SByte)watchMemoryObject.Data[0]).ToString();
         }
 
-        public static string Int16ToString(WatchMemoryObject watchMemoryObject)
+        public static object Int16ToString(WatchMemoryObject watchMemoryObject)
         {
             return BitConverter.ToInt16(watchMemoryObject.Data, 0).ToString();
         }
 
-        public static string Int32ToString(WatchMemoryObject watchMemoryObject)
+        public static object Int32ToString(WatchMemoryObject watchMemoryObject)
         {
             return BitConverter.ToInt32(watchMemoryObject.Data, 0).ToString();
         }
 
-        public static string Int64ToString(WatchMemoryObject watchMemoryObject)
+        public static object Int64ToString(WatchMemoryObject watchMemoryObject)
         {
             return BitConverter.ToInt64(watchMemoryObject.Data, 0).ToString();
         }
 
-        public static string UInt8ToString(WatchMemoryObject watchMemoryObject)
+        public static object UInt8ToString(WatchMemoryObject watchMemoryObject)
         {
             return watchMemoryObject.Data[0].ToString();
         }
 
-        public static string UInt16ToString(WatchMemoryObject watchMemoryObject)
+        public static object UInt16ToString(WatchMemoryObject watchMemoryObject)
         {
             return BitConverter.ToUInt16(watchMemoryObject.Data, 0).ToString();
         }
 
-        public static string UInt32ToString(WatchMemoryObject watchMemoryObject)
+        public static object UInt32ToString(WatchMemoryObject watchMemoryObject)
         {
             return BitConverter.ToUInt32(watchMemoryObject.Data, 0).ToString();
         }
 
-        public static string UInt64ToString(WatchMemoryObject watchMemoryObject)
+        public static object UInt64ToString(WatchMemoryObject watchMemoryObject)
         {
             return BitConverter.ToUInt64(watchMemoryObject.Data, 0).ToString();
         }
 
-        public static string Float32ToString(WatchMemoryObject watchMemoryObject)
+        public static object Float32ToString(WatchMemoryObject watchMemoryObject)
         {
             return BitConverter.ToSingle(watchMemoryObject.Data, 0).ToString();
         }
 
-        public static string Float64ToString(WatchMemoryObject watchMemoryObject)
+        public static object Float64ToString(WatchMemoryObject watchMemoryObject)
         {
             return BitConverter.ToDouble(watchMemoryObject.Data, 0).ToString();
         }
 
-        public static string ANSIStringToString(WatchMemoryObject watchMemoryObject)
+        public static object ANSIStringToString(WatchMemoryObject watchMemoryObject)
         {
             return Encoding.Default.GetString(watchMemoryObject.Data, 0, (int)watchMemoryObject.MaxSize);
         }
 
-        public static string UTF8StringToString(WatchMemoryObject watchMemoryObject)
+        public static object UTF8StringToString(WatchMemoryObject watchMemoryObject)
         {
             return Encoding.UTF8.GetString(watchMemoryObject.Data, 0, (int)watchMemoryObject.MaxSize);
         }
 
-        public static string HEXPatternToString(WatchMemoryObject watchMemoryObject)
+        public static object HEXPatternToString(WatchMemoryObject watchMemoryObject)
         {
             string hex = "";
 

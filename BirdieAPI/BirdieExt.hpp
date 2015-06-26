@@ -74,7 +74,7 @@ BIRDIE_ERROR Birdie_RegisterCustomType(const char* customHandlerCode)
 	Birdie_AddRegisteredType(customTypeName);
 
 	// Custom type code is sent over to Birdie
-	return Birdie_AddCustomTypeHandler(type, customHandlerCode);
+	return Birdie_AddCustomTypeHandler(customTypeName, customHandlerCode);
 }
 
 template <typename T>

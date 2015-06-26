@@ -473,7 +473,6 @@ BIRDIE_ERROR Birdie_AddCustomTypeHandler(BIRDIE_TYPE type, const char* handlerCo
 		return BIRDIE_ERROR_NOT_CONNECTED;
 
 	return BIRDIE_SUCCESS;
-
 }
 
 BIRDIE_HANDLE Birdie_GetNewHandle()

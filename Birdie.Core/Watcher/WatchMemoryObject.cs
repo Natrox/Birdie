@@ -17,11 +17,11 @@ namespace Birdie.Watcher
             Data = ProcessReader.ReadProcessMemory(this);
 
             if (Data != null)
-                DataAsString = DataConverter.Convert(this);
+                DataAsObject = DataConverter.Convert(this);
 
             // Make the error visible
             if (LastError != "")
-                DataAsString = LastError;
+                DataAsObject = LastError;
         }
         #endregion
 

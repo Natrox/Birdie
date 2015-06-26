@@ -3,11 +3,14 @@ using Birdie.Interop;
 using Birdie.Network;
 using Birdie.Process;
 using Birdie.Watcher;
+using Microsoft.CSharp;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +34,7 @@ namespace Birdie
             public const int RemoveWatchObject = 3;
             public const int AddCategory = 4;
             public const int AddLogMessage = 5;
+            public const int AddCustomTypeHandler = 6;
         }
         #endregion
 
@@ -132,6 +136,10 @@ namespace Birdie
 
                     case DataTypes.AddLogMessage:
                         AddLogMessage(clientContext);
+                        break;
+
+                    case DataTypes.AddCustomTypeHandler:
+                        AddCustomTypeHandler(clientContext);
                         break;
                 }
             }
@@ -297,6 +305,59 @@ namespace Birdie
 
             if (LogMessageAdd != null)
                 LogMessageAdd(clientContext.ProcessData, logMessage);
+        }
+
+        void AddCustomTypeHandler(ClientContext clientContext)
+        {
+            //memcpy((void*)(g_scratchBuffer + offset), (void*)&typeLength, sizeof(uint32_t));
+            //offset += sizeof(uint32_t);
+
+            //memcpy((void*)(g_scratchBuffer + offset), (void*)type, typeLength);
+            //offset += typeLength;
+
+            //memcpy((void*)(g_scratchBuffer + offset), (void*)&codeLength, sizeof(uint32_t));
+            //offset += sizeof(uint32_t);
+
+            //memcpy((void*)(g_scratchBuffer + offset), (void*)handlerCode, codeLength);
+            //offset += codeLength;
+
+            // Starting offset in 'data'
+            int offset = sizeof(UInt32);
+
+            // Layout of the data chunk:
+            // - Length (4b), Type string (*b)
+            // - Length (4b), Code string (*b)
+
+            int typeLength = BitConverter.ToInt32(clientContext.Data, offset); offset += sizeof(Int32);
+            string typeString = Encoding.ASCII.GetString(clientContext.Data, offset, typeLength); offset += typeLength;
+
+            int codeLength = BitConverter.ToInt32(clientContext.Data, offset); offset += sizeof(Int32);
+            string codeString = Encoding.ASCII.GetString(clientContext.Data, offset, codeLength); offset += codeLength;
+
+            // Now compile the code
+
+            CSharpCodeProvider provider = new CSharpCodeProvider();
+            CompilerParameters parameters = new CompilerParameters();
+
+            parameters.ReferencedAssemblies.Add("Birdie.Core.dll");
+            parameters.ReferencedAssemblies.Add("System.Data.dll");
+            parameters.ReferencedAssemblies.Add("System.dll");
+
+            parameters.GenerateExecutable = false;
+            parameters.GenerateInMemory = true;
+
+            CompilerResults results = provider.CompileAssemblyFromSource(parameters, codeString);
+
+            if (!results.Errors.HasErrors)
+            {
+                Assembly assembly = results.CompiledAssembly;
+                Type program = assembly.GetType("Birdie.Data.Program");
+                MethodInfo handler = program.GetMethod("Handler");
+
+                Delegate del = DataConverter.ConversionFunction.CreateDelegate(typeof(DataConverter.ConversionFunction), handler);
+
+                DataConverter.AddConversionFunction(typeString, del as DataConverter.ConversionFunction);
+            }
         }
         #endregion
 

@@ -46,15 +46,15 @@ namespace Birdie.Watcher
             }
         }
 
-        public string DataAsString
+        public object DataAsObject
         {
-            get { return dataAsString; }
+            get { return dataAsObject; }
             internal set
             {
-                dataAsString = value;
+                dataAsObject = value;
 
                 if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("DataAsString"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("DataAsObject"));
             }
         }
 
@@ -70,7 +70,7 @@ namespace Birdie.Watcher
         #region Fields
         public string name = "";
         public string baseAddressAsString = "";
-        public string dataAsString = "";
+        public object dataAsObject = null;
         #endregion
     }
 }
