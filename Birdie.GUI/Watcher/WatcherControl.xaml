@@ -91,6 +91,12 @@
             </DataTemplate.Triggers>
         </DataTemplate>
 
+        <DataTemplate x:Key="CellTemplate_DataAsObject">
+            <ContentPresenter Content="{Binding DataAsObject}">
+                
+            </ContentPresenter>
+        </DataTemplate>
+
 
         <GridViewColumnCollection x:Key="gvcc">
             <GridViewColumn Header="Name"  
@@ -100,7 +106,7 @@
             <GridViewColumn Header="Type" 
                       DisplayMemberBinding="{Binding Type}" Width="100"/>
             <GridViewColumn Header="Data" 
-                      DisplayMemberBinding="{Binding DataAsObject}" Width="200"/>
+                      CellTemplate="{StaticResource CellTemplate_DataAsObject}" Width="200"/>
         </GridViewColumnCollection>
 
 
