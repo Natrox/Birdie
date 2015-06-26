@@ -59,14 +59,6 @@ typedef enum
 	BIRDIE_ERROR_NOT_CONNECTED
 } BIRDIE_ERRORS;
 
-typedef struct
-{
-	const char* name;
-	BIRDIE_TYPE type;
-	void*       offset;
-	size_t      size;
-} BIRDIE_TEMPLATE_ENTRY;
-
 
 // Control functions
 
@@ -81,8 +73,8 @@ typedef struct
 ///		An deallocation function which accepts "void*".
 /// </param>
 /// <returns>
-///		Returns BIRDIE_SUCCESS on success.
-///		Returns BIRDIE_ERROR_INVALID_PARAMS when either parameter is NULL.
+///		* Returns BIRDIE_SUCCESS on success.
+///		* Returns BIRDIE_ERROR_INVALID_PARAMS when either parameter is NULL.
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_SetMemoryHandlers(BIRDIE_ALLOCATION_FUNCTION allocationFunction, BIRDIE_DEALLOCATION_FUNCTION deallocationFunction);
 
@@ -100,8 +92,8 @@ BIRDIEAPI BIRDIE_ERROR Birdie_SetMemoryHandlers(BIRDIE_ALLOCATION_FUNCTION alloc
 ///		The port the tool is listening on.
 /// </param>
 /// <returns>
-///		Returns BIRDIE_SUCCESS on success.
-///		Returns BIRDIE_ERROR_COULD_NOT_CONNECT upon failure,
+///		* Returns BIRDIE_SUCCESS on success.
+///		* Returns BIRDIE_ERROR_COULD_NOT_CONNECT upon failure,
 ///		please use WSAGetLastError for more detailed WinSock error information.
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_Initialize(uint64_t challengeKey, const char* pAddress, const char* pPort);
@@ -110,8 +102,8 @@ BIRDIEAPI BIRDIE_ERROR Birdie_Initialize(uint64_t challengeKey, const char* pAdd
 ///		Terminates any active connection to the Birdie tool.
 /// </summary>
 /// <returns>
-///		Returns BIRDIE_SUCCESS on success.
-///		Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool 
+///		* Returns BIRDIE_SUCCESS on success.
+///		* Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool 
 ///     (this can be used for diagnostic purposes).
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_Terminate(void);
@@ -133,10 +125,10 @@ BIRDIEAPI BIRDIE_ERROR Birdie_Terminate(void);
 ///		Pointer to a handle object in which the new watch category handle is stored.
 /// </param>
 /// <returns>
-///		Returns BIRDIE_SUCCESS on success.
-///		Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
-///		Returns BIRDIE_ERROR_INVALID_PARAMS if one or more parameters were malformed.
-///		Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
+///		* Returns BIRDIE_SUCCESS on success.
+///		* Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
+///		* Returns BIRDIE_ERROR_INVALID_PARAMS if one or more parameters were malformed.
+///		* Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_AddWatchCategory(const char* pName, BIRDIE_HANDLE parent, LPBIRDIE_HANDLE pHandle);
 
@@ -148,8 +140,8 @@ BIRDIEAPI BIRDIE_ERROR Birdie_AddWatchCategory(const char* pName, BIRDIE_HANDLE 
 ///		A handle to the category that is to be deleted.
 /// </param>
 /// <returns>
-///		Returns BIRDIE_SUCCESS on success.
-///		Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
+///		* Returns BIRDIE_SUCCESS on success.
+///		* Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_RemoveWatchCategory(BIRDIE_HANDLE handle);
 
@@ -178,10 +170,10 @@ BIRDIEAPI BIRDIE_ERROR Birdie_RemoveWatchCategory(BIRDIE_HANDLE handle);
 ///		Pointer to a handle object in which the new watch handle is stored.
 /// </param>
 /// <returns>
-///		Returns BIRDIE_SUCCESS on success.
-///		Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
-///		Returns BIRDIE_ERROR_INVALID_PARAMS if one or more parameters were malformed.
-///		Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
+///		* Returns BIRDIE_SUCCESS on success.
+///		* Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
+///		* Returns BIRDIE_ERROR_INVALID_PARAMS if one or more parameters were malformed.
+///		* Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_AddWatch(const char* pName, BIRDIE_TYPE type, void* pBase, size_t dataSizeBytes, BIRDIE_HANDLE parent, LPBIRDIE_HANDLE pHandle);
 
@@ -193,8 +185,8 @@ BIRDIEAPI BIRDIE_ERROR Birdie_AddWatch(const char* pName, BIRDIE_TYPE type, void
 ///		A handle to the watch that is to be deleted.
 /// </param>
 /// <returns>
-///		Returns BIRDIE_SUCCESS on success.
-///		Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
+///		* Returns BIRDIE_SUCCESS on success.
+///		* Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_RemoveWatch(BIRDIE_HANDLE handle);
 
@@ -211,10 +203,10 @@ BIRDIEAPI BIRDIE_ERROR Birdie_RemoveWatch(BIRDIE_HANDLE handle);
 ///		Pre-formatted message that is sent to the tool.
 /// </param>
 /// <returns>
-///		Returns BIRDIE_SUCCESS on success.
-///		Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
-///		Returns BIRDIE_ERROR_INVALID_PARAMS if one or more parameters were malformed.
-///		Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
+///		* Returns BIRDIE_SUCCESS on success.
+///		* Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
+///		* Returns BIRDIE_ERROR_INVALID_PARAMS if one or more parameters were malformed.
+///		* Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_Log(const char* pFilter, const char* pMessage);
 
@@ -231,10 +223,10 @@ BIRDIEAPI BIRDIE_ERROR Birdie_Log(const char* pFilter, const char* pMessage);
 ///		Objects to use in the formatting routine.
 /// </param>
 /// <returns>
-///		Returns BIRDIE_SUCCESS on success.
-///		Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
-///		Returns BIRDIE_ERROR_INVALID_PARAMS if one or more parameters were malformed.
-///		Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
+///		* Returns BIRDIE_SUCCESS on success.
+///		* Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
+///		* Returns BIRDIE_ERROR_INVALID_PARAMS if one or more parameters were malformed.
+///		* Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_LogF(const char* pFilter, const char* pFormat, ...);
 
@@ -251,9 +243,9 @@ BIRDIEAPI BIRDIE_ERROR Birdie_LogF(const char* pFilter, const char* pFormat, ...
 ///		Custom handler code (C#). Check documentation for the right format.
 /// </param>
 /// <returns>
-///		Returns BIRDIE_SUCCESS on success.
-///		Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
-///		Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
+///		* Returns BIRDIE_SUCCESS on success.
+///		* Returns BIRDIE_ERROR_INSUFFICIENT_MEMORY if there was insufficient temporary space.
+///		* Returns BIRDIE_ERROR_NOT_CONNECTED if there is no connection to the tool.
 /// </returns>
 BIRDIEAPI BIRDIE_ERROR Birdie_AddCustomTypeHandler(BIRDIE_TYPE type, const char* handlerCode);
 
