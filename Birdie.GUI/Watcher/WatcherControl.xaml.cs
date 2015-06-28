@@ -33,23 +33,37 @@ namespace Birdie.Watcher
             watcherTreeView.DataContext = processData.RootWatchBaseObjects;
 
             // Set up the timer
-            timer.Interval = 50.0;
+            timer.Interval = 0.25;
             timer.Elapsed += timer_Elapsed;
             timer.Start();
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+            timer.Stop();
+
             try
             {
                 Dispatcher.Invoke(() =>
                 {
-                    foreach (WatchMemoryObject watchMemoryObject in monitoredObjects)
-                        watchMemoryObject.ReadMemory();
+                    // Sliding loop
+                    if (monitoredObjects.Count > 0)
+                    {
+                        for (int i = 0; i < 50; i++)
+                        {
+                            if (currentIndex >= monitoredObjects.Count)
+                                currentIndex = 0;
+
+                            monitoredObjects.ElementAt(currentIndex).ReadMemory();
+                            currentIndex += 1;
+                        }
+                    }
                 });
             }
             catch (TaskCanceledException)
             { }
+
+            timer.Start();
         }
         #endregion
 
@@ -61,6 +75,7 @@ namespace Birdie.Watcher
         private ProcessData processData = null;
         private List<WatchMemoryObject> monitoredObjects = new List<WatchMemoryObject>();
         private Timer timer = new Timer();
+        private int currentIndex = 0;
         #endregion
     }
 }
