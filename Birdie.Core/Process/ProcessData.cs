@@ -60,11 +60,13 @@ namespace Birdie.Process
         public UInt64 ProcessId { get; internal set; }
         public string ProcessName { get; internal set; }
         public WatchObjectContainer RootWatchBaseObjects { get { return rootWatchBaseObjects; } }
+        public DataConverter DataConverter { get { return dataConverter; } }
         #endregion
 
         #region Fields
         private WatchObjectContainer rootWatchBaseObjects = new WatchObjectContainer();
         private Dictionary<UInt32, WatchBaseObject> watchBaseObjects = new Dictionary<UInt32,WatchBaseObject>();
+        private DataConverter dataConverter = new DataConverter();
         #endregion
     }
 }

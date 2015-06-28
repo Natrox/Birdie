@@ -17,7 +17,7 @@ namespace Birdie.Watcher
             Data = ProcessReader.ReadProcessMemory(this);
 
             if (Data != null)
-                DataAsObject = DataConverter.Convert(this);
+                DataAsObject = ProcessData.DataConverter.Convert(this);
 
             // Make the error visible
             if (LastError != "")

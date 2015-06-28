@@ -32,28 +32,28 @@ namespace Birdie.Data
     /// <summary>
     /// Class used to convert memory information to a format fitting the type.
     /// </summary>
-    public static class DataConverter
+    public class DataConverter
     {
         #region Delegates        
         public delegate object ConversionFunction(WatchMemoryObject watchOject);
         #endregion
 
         #region Methods   
-        static DataConverter()
+        public DataConverter()
         {
-            BaseConversionFunctions.RegisterConversionFunctions();
+            BaseConversionFunctions.RegisterConversionFunctions(this);
         }
 
         /// <summary>
         /// Static constructor which adds all the conversion methods for base types.
         /// </summary>
-        public static void AddConversionFunction(string type, ConversionFunction function)
+        public void AddConversionFunction(string type, ConversionFunction function)
         {
             if (!conversionFunctions.ContainsKey(type))
                 conversionFunctions.Add(type, function);
         }
 
-        public static object Convert(WatchMemoryObject watchMemoryObject)
+        public object Convert(WatchMemoryObject watchMemoryObject)
         {
             if (!conversionFunctions.ContainsKey(watchMemoryObject.Type))
                 return null;
@@ -63,32 +63,32 @@ namespace Birdie.Data
         #endregion
 
         #region Fields
-        private static Dictionary<string, ConversionFunction> conversionFunctions = new Dictionary<string,ConversionFunction>();
+        private Dictionary<string, ConversionFunction> conversionFunctions = new Dictionary<string,ConversionFunction>();
         #endregion
     }
 
     internal static class BaseConversionFunctions
     {
         #region Methods
-        public static void RegisterConversionFunctions()
+        public static void RegisterConversionFunctions(DataConverter dataConverter)
         {
-            DataConverter.AddConversionFunction(BaseTypes.Bool.ToString(), BoolToString);
-            DataConverter.AddConversionFunction(BaseTypes.Int8.ToString(), Int8ToString);
-            DataConverter.AddConversionFunction(BaseTypes.Int16.ToString(), Int16ToString);
-            DataConverter.AddConversionFunction(BaseTypes.Int32.ToString(), Int32ToString);
-            DataConverter.AddConversionFunction(BaseTypes.Int64.ToString(), Int64ToString);
+            dataConverter.AddConversionFunction(BaseTypes.Bool.ToString(), BoolToString);
+            dataConverter.AddConversionFunction(BaseTypes.Int8.ToString(), Int8ToString);
+            dataConverter.AddConversionFunction(BaseTypes.Int16.ToString(), Int16ToString);
+            dataConverter.AddConversionFunction(BaseTypes.Int32.ToString(), Int32ToString);
+            dataConverter.AddConversionFunction(BaseTypes.Int64.ToString(), Int64ToString);
 
-            DataConverter.AddConversionFunction(BaseTypes.UInt8.ToString(), UInt8ToString);
-            DataConverter.AddConversionFunction(BaseTypes.UInt16.ToString(), UInt16ToString);
-            DataConverter.AddConversionFunction(BaseTypes.UInt32.ToString(), UInt32ToString);
-            DataConverter.AddConversionFunction(BaseTypes.UInt64.ToString(), UInt64ToString);
+            dataConverter.AddConversionFunction(BaseTypes.UInt8.ToString(), UInt8ToString);
+            dataConverter.AddConversionFunction(BaseTypes.UInt16.ToString(), UInt16ToString);
+            dataConverter.AddConversionFunction(BaseTypes.UInt32.ToString(), UInt32ToString);
+            dataConverter.AddConversionFunction(BaseTypes.UInt64.ToString(), UInt64ToString);
 
-            DataConverter.AddConversionFunction(BaseTypes.Float32.ToString(), Float32ToString);
-            DataConverter.AddConversionFunction(BaseTypes.Float64.ToString(), Float64ToString);
+            dataConverter.AddConversionFunction(BaseTypes.Float32.ToString(), Float32ToString);
+            dataConverter.AddConversionFunction(BaseTypes.Float64.ToString(), Float64ToString);
 
-            DataConverter.AddConversionFunction(BaseTypes.ANSIString.ToString(), ANSIStringToString);
-            DataConverter.AddConversionFunction(BaseTypes.UTF8String.ToString(), UTF8StringToString);
-            DataConverter.AddConversionFunction(BaseTypes.HEXPattern.ToString(), HEXPatternToString);
+            dataConverter.AddConversionFunction(BaseTypes.ANSIString.ToString(), ANSIStringToString);
+            dataConverter.AddConversionFunction(BaseTypes.UTF8String.ToString(), UTF8StringToString);
+            dataConverter.AddConversionFunction(BaseTypes.HEXPattern.ToString(), HEXPatternToString);
         }
 
         public static object BoolToString(WatchMemoryObject watchMemoryObject)

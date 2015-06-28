@@ -309,18 +309,6 @@ namespace Birdie
 
         void AddCustomTypeHandler(ClientContext clientContext)
         {
-            //memcpy((void*)(g_scratchBuffer + offset), (void*)&typeLength, sizeof(uint32_t));
-            //offset += sizeof(uint32_t);
-
-            //memcpy((void*)(g_scratchBuffer + offset), (void*)type, typeLength);
-            //offset += typeLength;
-
-            //memcpy((void*)(g_scratchBuffer + offset), (void*)&codeLength, sizeof(uint32_t));
-            //offset += sizeof(uint32_t);
-
-            //memcpy((void*)(g_scratchBuffer + offset), (void*)handlerCode, codeLength);
-            //offset += codeLength;
-
             // Starting offset in 'data'
             int offset = sizeof(UInt32);
 
@@ -356,7 +344,7 @@ namespace Birdie
 
                 Delegate del = DataConverter.ConversionFunction.CreateDelegate(typeof(DataConverter.ConversionFunction), handler);
 
-                DataConverter.AddConversionFunction(typeString, del as DataConverter.ConversionFunction);
+                clientContext.ProcessData.DataConverter.AddConversionFunction(typeString, del as DataConverter.ConversionFunction);
             }
         }
         #endregion
