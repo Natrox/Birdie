@@ -49,7 +49,7 @@ namespace Birdie.Watcher
         public object DataAsObject
         {
             get { return dataAsObject; }
-            internal set
+            set
             {
                 dataAsObject = value;
 

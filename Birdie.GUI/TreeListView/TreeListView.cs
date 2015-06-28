@@ -43,7 +43,7 @@ namespace Birdie.TreeListView
 
         protected override void OnItemsChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (AutoExpand)
+            if (AutoExpand && e.OldItems == null)
                 this.IsExpanded = true;
 
             base.OnItemsChanged(e);

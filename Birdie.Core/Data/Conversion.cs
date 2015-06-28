@@ -58,7 +58,16 @@ namespace Birdie.Data
             if (!conversionFunctions.ContainsKey(watchMemoryObject.Type))
                 return null;
 
-            return conversionFunctions[watchMemoryObject.Type](watchMemoryObject);
+            try
+            {
+                object result = conversionFunctions[watchMemoryObject.Type](watchMemoryObject);
+                return result;
+            }
+            catch (SystemException excpt)
+            {
+                return string.Format("Conversion function threw an exception: {0}!", excpt.ToString());
+            }
+
         }
         #endregion
 

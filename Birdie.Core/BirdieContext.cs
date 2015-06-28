@@ -328,9 +328,10 @@ namespace Birdie
             CompilerParameters parameters = new CompilerParameters();
 
             // This is a bit gross, but it's a reliable way to add
-            // 'PresentationCore.dll', 'PresentationFramework'.
+            // 'PresentationCore.dll', 'PresentationFramework' and 'WindowsBase.dll'.
             parameters.ReferencedAssemblies.Add(typeof(System.Windows.Controls.Canvas).Assembly.Location);
             parameters.ReferencedAssemblies.Add(typeof(System.Windows.UIElement).Assembly.Location);
+            parameters.ReferencedAssemblies.Add(typeof(System.Windows.Point).Assembly.Location);
 
             parameters.ReferencedAssemblies.Add("Birdie.Core.dll");
             parameters.ReferencedAssemblies.Add("System.Data.dll");
@@ -344,13 +345,20 @@ namespace Birdie
 
             if (!results.Errors.HasErrors)
             {
-                Assembly assembly = results.CompiledAssembly;
-                Type program = assembly.GetType("Birdie.Data.Program");
-                MethodInfo handler = program.GetMethod("Handler");
+                try
+                {
+                    Assembly assembly = results.CompiledAssembly;
+                    Type program = assembly.GetType("Birdie.Data.Program");
+                    MethodInfo handler = program.GetMethod("Handler");
 
-                Delegate del = DataConverter.ConversionFunction.CreateDelegate(typeof(DataConverter.ConversionFunction), handler);
+                    Delegate del = DataConverter.ConversionFunction.CreateDelegate(typeof(DataConverter.ConversionFunction), handler);
 
-                clientContext.ProcessData.DataConverter.AddConversionFunction(typeString, del as DataConverter.ConversionFunction);
+                    clientContext.ProcessData.DataConverter.AddConversionFunction(typeString, del as DataConverter.ConversionFunction);
+                }
+                catch
+                {
+                    // Do nothing here
+                }
             }
         }
         #endregion
