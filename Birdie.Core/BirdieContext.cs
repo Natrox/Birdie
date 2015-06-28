@@ -327,9 +327,15 @@ namespace Birdie
             CSharpCodeProvider provider = new CSharpCodeProvider();
             CompilerParameters parameters = new CompilerParameters();
 
+            // This is a bit gross, but it's a reliable way to add
+            // 'PresentationCore.dll', 'PresentationFramework'.
+            parameters.ReferencedAssemblies.Add(typeof(System.Windows.Controls.Canvas).Assembly.Location);
+            parameters.ReferencedAssemblies.Add(typeof(System.Windows.UIElement).Assembly.Location);
+
             parameters.ReferencedAssemblies.Add("Birdie.Core.dll");
             parameters.ReferencedAssemblies.Add("System.Data.dll");
             parameters.ReferencedAssemblies.Add("System.dll");
+            parameters.ReferencedAssemblies.Add("System.Xaml.dll");
 
             parameters.GenerateExecutable = false;
             parameters.GenerateInMemory = true;
